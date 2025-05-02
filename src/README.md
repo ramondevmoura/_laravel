@@ -60,10 +60,7 @@ Infelizmente, **não houve tempo hábil para implementar os testes automatizados
 ```bash
 git clone https://github.com/seu-usuario/_laravel.git
 cd _laravel/src
-docker-compose up --build
-composer install
-docker-compose exec app php artisan migrate --seed
-npm run dev
+php artisan project:start
 
 Usuario admin: 
 
