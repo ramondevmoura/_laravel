@@ -10,7 +10,6 @@ Sistema de gestão de **pedidos de viagem** desenvolvido em **Laravel 11**, **Vu
 - Painel para **criar e listar pedidos de viagem**.
 - **Admin pode aprovar ou cancelar** pedidos.
 - Notificações salvas no banco e exibidas por usuário.
-- **Som de alerta** ao receber uma nova notificação.
 - Interface moderna com **Tailwind CSS** + **Vue 3** + **Vite**.
 - Banco de dados PostgreSQL.
 
@@ -29,7 +28,7 @@ Sistema de gestão de **pedidos de viagem** desenvolvido em **Laravel 11**, **Vu
 
 - São **salvas no banco de dados** (tabela `notifications`) ao **alterar o status** de um pedido (`aprovado` ou `cancelado`).
 - São exibidas **somente para o usuário dono do pedido**.
-- Quando novas notificações não lidas são encontradas, o **ícone exibe um badge animado** e **um som de alerta** é tocado.
+- Quando novas notificações não lidas são encontradas, o **ícone exibe um badge animado**.
 - O admin **não recebe** notificações — ele apenas altera status de terceiros.
 
 ---
