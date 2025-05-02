@@ -243,7 +243,7 @@ const apagarViagem = async (id: number) => {
         </div>
 
         <!-- Modal de viagem -->
-        <div v-if="modalAberto" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div v-if="modalAberto" class="fixed inset-0 bg-gray-600/30 backdrop-blur-md dark:bg-gray-900/20 flex items-center justify-center z-50">
             <div class="bg-white dark:bg-gray-800 p-6 rounded shadow max-w-md w-full relative">
                 <button @click="modalAberto = false" class="absolute top-3 right-3 text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white">
                     <X class="w-5 h-5" />
