@@ -57,7 +57,11 @@ Infelizmente, **não houve tempo hábil para implementar os testes automatizados
 ### 1. Clone o repositório
 ```bash
 git clone https://github.com/seu-usuario/_laravel.git
-cd _laravel
+cd _laravel/src
 docker-compose up --build
-$ docker-compose exec app php artisan migrate --seed
+docker-compose exec app php artisan migrate --seed
 npm run dev
+
+Usuario admin: 
+email: teste@example.com
+senha: 12345678
