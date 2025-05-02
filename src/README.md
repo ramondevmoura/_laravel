@@ -1,10 +1,11 @@
+
 # 🚀 Onfly Travel Requests - Teste Técnico
 
 Sistema de gestão de **pedidos de viagem** desenvolvido em **Laravel 11**, **Vue 3**, **Inertia.js**, **Sanctum** e **Docker**, com notificações em tempo real e autenticação baseada em sessão.
 
-![img.png](img.png)
-![img_1.png](img_1.png)
-![img_2.png](img_2.png)
+![img.png](src/img.png)
+![img_1.png](src/img_1.png)
+![img_2.png](src/img_2.png)
 
 ## ✅ Funcionalidades
 
