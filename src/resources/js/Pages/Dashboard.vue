@@ -25,24 +25,27 @@ const viagemSelecionada = ref<any>(null)
 const form = ref({ destination: '', departure_date: '', return_date: '', status: 'solicitado' })
 const saving = ref(false)
 const deletingId = ref<number | null>(null)
+const carregando = ref(false)
 
 const carregarViagens = async () => {
+    carregando.value = true
     const params: Record<string, string> = {}
     if (filtroStatus.value) params.status = filtroStatus.value
     if (filtroDestino.value) params.destination = filtroDestino.value
     if (filtroDe.value) params.from = filtroDe.value
     if (filtroAte.value) params.to = filtroAte.value
 
-    const response = await TravelService.listar(params)
-    const todasViagens = response?.viagens || []
+    try {
+        const response = await TravelService.listar(params)
+        const todasViagens = response?.viagens || []
 
-    if (auth.user?.role === 'admin') {
-        viagens.value = todasViagens
-    } else {
-        viagens.value = todasViagens.filter((v: any) => v.user_id === auth.user?.id)
+        viagens.value = auth.user?.role === 'admin'
+            ? todasViagens
+            : todasViagens.filter((v: any) => v.user_id === auth.user?.id)
+    } finally {
+        carregando.value = false
     }
 }
-
 onMounted(async () => {
     await auth.fetchUser()
     await carregarViagens()
@@ -195,6 +198,7 @@ const apagarViagem = async (id: number) => {
                         <th class="px-6 py-3">Ações</th>
                     </tr>
                     </thead>
+
                     <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
                     <tr v-for="viagem in viagens" :key="viagem.id" class="hover:bg-gray-50 dark:hover:bg-gray-800 transition">
                         <td class="px-6 py-4">{{ viagem.id || '---' }}</td>
@@ -220,8 +224,18 @@ const apagarViagem = async (id: number) => {
                             </button>
                         </td>
                     </tr>
-                    <tr v-if="viagens.length === 0">
-                        <td colspan="6" class="text-center py-6 text-gray-500 dark:text-gray-400">Nenhum pedido encontrado</td>
+                    <tr v-if="carregando">
+                        <td colspan="7" class="text-center py-6">
+                            <Loader2 class="w-6 h-6 mx-auto animate-spin text-gray-600 dark:text-gray-300" />
+                            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">Carregando viagens...</p>
+                        </td>
+                    </tr>
+
+                    <!-- Mensagem quando não há viagens e não está carregando -->
+                    <tr v-else-if="viagens.length === 0">
+                        <td colspan="7" class="text-center py-6 text-gray-500 dark:text-gray-400">
+                            Nenhum pedido encontrado
+                        </td>
                     </tr>
                     </tbody>
                 </table>
