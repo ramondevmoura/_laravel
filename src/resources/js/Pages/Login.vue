@@ -1,3 +1,63 @@
+
+<script setup>
+import { ref } from 'vue'
+import { router } from '@inertiajs/vue3'
+import { useAuthStore } from '../store/auth.js'
+import { useToast } from 'vue-toastification'
+import LoginInput from '../components/LoginInput.vue'
+import FullScreenLayout from '../components/FullScreenLayout.vue'
+import onflyLogo from '@/assets/images/onfly.png'
+
+const toast = useToast()
+const auth = useAuthStore()
+
+const email = ref('')
+const password = ref('')
+const emailError = ref('')
+const passwordError = ref('')
+const isLoading = ref(false)
+
+defineOptions({
+    layout: null
+})
+async function submit() {
+    emailError.value = ''
+    passwordError.value = ''
+    let hasError = false
+
+    if (!email.value.includes('@')) {
+        emailError.value = 'Email inválido'
+        hasError = true
+    }
+
+    if (password.value.length < 6) {
+        passwordError.value = 'A senha deve ter pelo menos 6 caracteres'
+        hasError = true
+    }
+
+    if (hasError) return
+
+    isLoading.value = true
+
+    try {
+        const response = await auth.login(email.value, password.value)
+        toast.success('Login realizado com sucesso!')
+        if (response?.redirect) {
+            router.visit(response.redirect)
+        } else {
+            router.visit('/')
+        }
+    } catch (err) {
+        passwordError.value = 'Email ou senha incorretos'
+        toast.error('Erro ao fazer login. Verifique seus dados.')
+    } finally {
+        isLoading.value = false
+    }
+}
+</script>
+
+
+
 <template>
     <FullScreenLayout>
         <div class="relative min-h-screen bg-white dark:bg-white flex flex-col lg:flex-row">
@@ -72,60 +132,3 @@
 </template>
 
 
-<script setup>
-import { ref } from 'vue'
-import { router } from '@inertiajs/vue3'
-import { useAuthStore } from '../store/auth.js'
-import { useToast } from 'vue-toastification'
-import LoginInput from '../components/LoginInput.vue'
-import FullScreenLayout from '../components/FullScreenLayout.vue'
-import onflyLogo from '@/assets/images/onfly.png'
-
-const toast = useToast()
-const auth = useAuthStore()
-
-const email = ref('')
-const password = ref('')
-const emailError = ref('')
-const passwordError = ref('')
-const isLoading = ref(false)
-
-defineOptions({
-    layout: null
-})
-async function submit() {
-    emailError.value = ''
-    passwordError.value = ''
-    let hasError = false
-
-    if (!email.value.includes('@')) {
-        emailError.value = 'Email inválido'
-        hasError = true
-    }
-
-    if (password.value.length < 6) {
-        passwordError.value = 'A senha deve ter pelo menos 6 caracteres'
-        hasError = true
-    }
-
-    if (hasError) return
-
-    isLoading.value = true
-
-    try {
-        const response = await auth.login(email.value, password.value)
-        console.log(response)
-        toast.success('Login realizado com sucesso!')
-        if (response?.redirect) {
-            router.visit(response.redirect)
-        } else {
-            router.visit('/')
-        }
-    } catch (err) {
-        passwordError.value = 'Email ou senha incorretos'
-        toast.error('Erro ao fazer login. Verifique seus dados.')
-    } finally {
-        isLoading.value = false
-    }
-}
-</script>
